@@ -19,7 +19,7 @@ import java.util.Map;
 import ilw.org.meintagebuch.R;
 import ilw.org.meintagebuch.dto.Day;
 import ilw.org.meintagebuch.dto.Subject;
-
+import ilw.org.meintagebuch.helper.SQLHelper;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText commentEditText;
     Date date;
-    //SQLHelper db;
+    SQLHelper db;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d.MMMM.yyyy", Locale.GERMANY);
     private Map<String,Day> records;
 
@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //db = new SQLHelper(getApplicationContext());
-        //records = db.getRecords();  d
+        db = new SQLHelper(getApplicationContext());
+        records = db.getRecords();
         redraw();
     }
 
@@ -130,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
             Map<String, Subject> subjects2 = records.get(simpleDateFormat.format(date)).getSubjects();
             subjects2.putAll(subjects);
             records.put(simpleDateFormat.format(date), new Day(subjects2, commentEditText.getText().toString().trim()));
-            //db.addDay(simpleDateFormat.format(date), records.get(simpleDateFormat.format(date)));
+            db.addDay(simpleDateFormat.format(date), records.get(simpleDateFormat.format(date)));
 
         } else {
             records.put(simpleDateFormat.format(date), new Day(subjects, commentEditText.getText().toString().trim()));
-            //db.addDay(simpleDateFormat.format(date), records.get(simpleDateFormat.format(date)));
+            db.addDay(simpleDateFormat.format(date), records.get(simpleDateFormat.format(date)));
         }
 
     }
