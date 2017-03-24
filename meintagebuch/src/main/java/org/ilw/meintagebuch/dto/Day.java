@@ -1,4 +1,4 @@
-package ilw.org.meintagebuch.dto;
+package org.ilw.meintagebuch.dto;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,7 +29,7 @@ public class Day {
             builder.append(((Subject)pair.getValue()).getValue());
             builder.append("XXXXX");
             String temp = ((Subject)pair.getValue()).getComments();
-            if (temp.isEmpty())
+            if ((temp == null) ||(temp.isEmpty()))
             {
                 temp = " ";
             }

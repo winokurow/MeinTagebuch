@@ -1,4 +1,4 @@
-package ilw.org.meintagebuch.dto;
+package org.ilw.meintagebuch.dto;
 
 /**
  * Created by Ilja.Winokurow on 17.02.2017.

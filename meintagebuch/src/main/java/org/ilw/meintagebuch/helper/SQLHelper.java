@@ -1,4 +1,4 @@
-package ilw.org.meintagebuch.helper;
+package org.ilw.meintagebuch.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,11 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.ilw.meintagebuch.dto.Day;
+import org.ilw.meintagebuch.dto.Subject;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import ilw.org.meintagebuch.dto.Day;
-import ilw.org.meintagebuch.dto.Subject;
 
 public class SQLHelper extends SQLiteOpenHelper {
 
@@ -109,11 +109,11 @@ public class SQLHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         if (isDateExists(date)) {
-            db.update(KEY_RECORDS_DATE, values, KEY_RECORDS_DATE+"='"+date + "'", null);
+            db.update(TABLE_RECORDS, values, KEY_RECORDS_DATE+"='"+date + "'", null);
         } else
 
     {
-        long id = db.insert(KEY_RECORDS_DATE, null, values);
+        long id = db.insert(TABLE_RECORDS, null, values);
     }
     }
 
