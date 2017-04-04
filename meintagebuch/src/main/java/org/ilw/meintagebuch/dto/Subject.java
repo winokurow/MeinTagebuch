@@ -13,6 +13,7 @@ public class Subject {
         this.comments = comments;
     }
 
+
     public int getValue() {
         return value;
     }

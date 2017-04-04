@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button_vorheriger_tag">Vorheriger tag</string>
+    <string name="button_naechster_tag">nachster Tag</string>
+    <string name="text_hint_des_tages">Hint des Tages:</string>
+    <string name="button_kommentar_hinzuf_gen">Kommentar hinzufügen</string>
+</resources>

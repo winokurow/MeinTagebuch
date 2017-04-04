@@ -3,20 +3,26 @@ package org.ilw.meintagebuch.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.ilw.meintagebuch.dto.Day;
 import org.ilw.meintagebuch.dto.Subject;
+import org.ilw.meintagebuch.dto.SubjectMod;
 import org.ilw.meintagebuch.helper.SQLHelper;
 
 import java.text.SimpleDateFormat;
@@ -24,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
@@ -35,21 +42,20 @@ public class MainActivity extends AppCompatActivity {
     TextView dateEditText;
     ImageButton prevButton;
     ImageButton nextButton;
-    SeekBar seekBar1;
-    SeekBar seekBar2;
-    ImageButton commentSubj1Button;
     EditText commentEditText;
     Date date;
     SQLHelper db;
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE d.MMMM.yyyy", Locale.GERMANY);
     private Map<String,Day> records;
-    Map<String, String> comments;
+    Map<Integer, String> comments;
+    Map<Integer, SubjectMod> subjects;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        comments = new HashMap<String,String>();
+
+        comments = new HashMap<Integer,String>();
         records = new HashMap<String,Day>();
         if (date == null) {
             date = new Date();
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View view) {
                 save();
+                comments = new HashMap<Integer, String>();
                 Calendar c = Calendar.getInstance();
                 c.setTime(date);
                 c.add(Calendar.DATE, -1);
@@ -75,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             public void onClick(View view) {
                 save();
+                comments = new HashMap<Integer, String>();
                 Calendar c = Calendar.getInstance();
                 c.setTime(date);
                 c.add(Calendar.DATE, 1);
@@ -84,8 +92,74 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        seekBar1 = (SeekBar) findViewById(R.id.seekBar1);
-        seekBar2 = (SeekBar) findViewById(R.id.seekBar2);
+        db = new SQLHelper(getApplicationContext());
+        subjects = db.getSubjects("1");
+        LinearLayout parent = (LinearLayout) findViewById(R.id.dynamic);
+        Iterator it = subjects.entrySet().iterator();
+        while (it.hasNext())
+        {
+            final Map.Entry pair = (Map.Entry)it.next();
+
+            LinearLayout layout1 = new LinearLayout(this);
+            layout1.setOrientation(LinearLayout.VERTICAL);
+            int value75 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,75, getResources().getDisplayMetrics());
+            int value20 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,20, getResources().getDisplayMetrics());
+            int value08 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,8, getResources().getDisplayMetrics());
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, value75);
+            layoutParams.setMargins(value20, 0, value20, 0);
+            layoutParams.gravity = Gravity.CENTER;
+            layout1.setLayoutParams(layoutParams);
+            layout1.setBackgroundResource(R.drawable.border);
+
+            TextView textView = new TextView(this);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(value08, 0, 0, 0);
+            layoutParams.gravity = Gravity.CENTER;
+            textView.setLayoutParams(layoutParams);
+            textView.setText(((SubjectMod)pair.getValue()).getDescription());
+            textView.setTextColor(Color.parseColor("#ff0099cc"));
+            textView.setTextSize(14);
+            textView.setMaxLines(6000);
+
+            layout1.addView(textView);
+
+            LinearLayout layout2 = new LinearLayout(this);
+            layout2.setOrientation(LinearLayout.HORIZONTAL);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(value20, 0, value20, 0);
+            layoutParams.gravity = Gravity.CENTER;
+            layout2.setLayoutParams(layoutParams);
+
+            SeekBar seekBar = new SeekBar(this);
+            layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 80);
+            layoutParams.setMargins(value08, 0, 0, 0);
+            layoutParams.gravity = Gravity.CENTER;
+            seekBar.setLayoutParams(layoutParams);
+            seekBar.setMax(10);
+            seekBar.setId(((Integer)pair.getKey()) + 10000);
+            seekBar.setProgress(0);
+
+            layout2.addView(seekBar);
+
+            ImageButton button = new ImageButton(this);
+            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            button.setLayoutParams(layoutParams);
+            button.setBackgroundColor(Color.WHITE);
+            button.setImageResource(R.drawable.comment);
+            button.setId(((Integer)pair.getKey()) + 20000);
+            button.setContentDescription("Kommentar hinzufügen");
+            button.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View view) {
+                    onShowPopup(view, (Integer)pair.getKey());
+                }
+            });
+
+            layout2.addView(button);
+
+            layout1.addView(layout2);
+            parent.addView(layout1);
+        }
 
         commentEditText = (EditText) findViewById(R.id.generalComment);
 
@@ -97,15 +171,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        commentSubj1Button = (ImageButton) findViewById(R.id.coment1Button);
-        commentSubj1Button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                onShowPopup(view, "sport");
-            }
-        });
-
-        db = new SQLHelper(getApplicationContext());
         records = db.getRecords();
         redraw();
     }
@@ -113,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     public void redraw() {
         String dateString = simpleDateFormat.format(date);
         dateEditText.setText(dateString);
-        comments = new HashMap<String,String>();
+
         if (simpleDateFormat.format(date).equals(simpleDateFormat.format(new Date()))) {
             nextButton.setEnabled(false);
             nextButton.setAlpha(.5f);
@@ -123,49 +188,69 @@ public class MainActivity extends AppCompatActivity {
             nextButton.setAlpha(1f);
             nextButton.setClickable(true);
         }
+        Iterator it = subjects.entrySet().iterator();
+        while (it.hasNext()) {
+            final Map.Entry pair = (Map.Entry) it.next();
+            int id = ((Integer) pair.getKey());
+            SeekBar seekBar = (SeekBar) findViewById(id + 10000);
+            if (records.containsKey(simpleDateFormat.format(date)) && (records.get(simpleDateFormat.format(date)).getSubjects().containsKey(id))) {
+                Day current = records.get(simpleDateFormat.format(date));
 
-        if (records.containsKey(simpleDateFormat.format(date)))
-        {
-            Day current = records.get(simpleDateFormat.format(date));
-            seekBar1.setProgress(current.getSubjects().get("sport").getValue());
-            seekBar2.setProgress(current.getSubjects().get("hausaufgaben").getValue());
-            comments.put("sport", current.getSubjects().get("sport").getComments());
-            comments.put("hausaufgaben", current.getSubjects().get("hausaufgaben").getComments());
+                seekBar.setProgress(current.getSubjects().get(id).getValue());
 
+                comments.put(id, current.getSubjects().get(id).getComments());
+                commentEditText.setText(current.getComment());
 
-            commentEditText.setText(current.getComment());
+            } else {
 
-        } else
-        {
-            seekBar1.setProgress(5);
-            seekBar2.setProgress(5);
+                seekBar.setProgress(5);
+            }
+
+        }
+
+        it = comments.entrySet().iterator();
+        while (it.hasNext()) {
+            final Map.Entry pair = (Map.Entry) it.next();
+            int id = ((Integer) pair.getKey());
+            ImageButton button = (ImageButton) findViewById(id + 20000);
+            if (button != null) {
+                button.setOnLongClickListener(new View.OnLongClickListener() {
+                    public boolean onLongClick(View v) {
+                        Toast.makeText(v.getContext(), (String) pair.getValue(), Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
+                });
+            }
+            button.setImageResource(R.drawable.commentset);
         }
     }
-
     public void save() {
         String comment = "";
-            Subject subj1 = new Subject(seekBar1.getProgress(), comments.get("sport"));
-        Subject subj2 = new Subject(seekBar2.getProgress(), comments.get("hausaufgaben"));
-        Map<String, Subject> subjects = new HashMap<>();
-        subjects.put("sport", subj1);
-        subjects.put("hausaufgaben", subj2);
+        Map<Integer, Subject> subject = new HashMap<>();
+        Iterator it = subjects.entrySet().iterator();
+        while (it.hasNext()) {
+            final Map.Entry pair = (Map.Entry) it.next();
+            int id = ((Integer) pair.getKey());
+            SeekBar seekBar = (SeekBar) findViewById(id + 10000);
+            Subject subj = new Subject(seekBar.getProgress(), comments.get(id));
+            subject.put(id, subj);
+        }
 
         if (records.containsKey(simpleDateFormat.format(date)))
         {
-            Map<String, Subject> subjects2 = records.get(simpleDateFormat.format(date)).getSubjects();
-            subjects2.putAll(subjects);
+            Map<Integer, Subject> subjects2 = records.get(simpleDateFormat.format(date)).getSubjects();
+            subjects2.putAll(subject);
             records.put(simpleDateFormat.format(date), new Day(subjects2, commentEditText.getText().toString().trim()));
             db.addDay(simpleDateFormat.format(date), records.get(simpleDateFormat.format(date)));
 
         } else {
-            records.put(simpleDateFormat.format(date), new Day(subjects, commentEditText.getText().toString().trim()));
+            records.put(simpleDateFormat.format(date), new Day(subject, commentEditText.getText().toString().trim()));
             db.addDay(simpleDateFormat.format(date), records.get(simpleDateFormat.format(date)));
         }
-
     }
 
     // call this method when required to show popup
-    public void onShowPopup(View v, final String elementName){
+    public void onShowPopup(View v, final Integer elementName){
 
         LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -189,7 +274,8 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog,int id) {
                                 // get user input and set it to result
                                 // edit text
-                                    comments.put(elementName, userInput.getText().toString());
+                                comments.put(elementName, userInput.getText().toString());
+                                redraw();
                             }
                         })
                 .setNegativeButton("Cancel",

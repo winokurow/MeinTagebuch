@@ -8,15 +8,15 @@ import java.util.Map;
  */
 
 public class Day {
-    Map<String, Subject> subjects;
+    Map<Integer, Subject> subjects;
     String comment;
 
-    public Day(Map<String, Subject> subjects, String comment) {
+    public Day(Map<Integer, Subject> subjects, String comment) {
         this.subjects = subjects;
         this.comment = comment;
     }
 
-    public Map<String, Subject> getSubjects() {
+    public Map<Integer, Subject> getSubjects() {
         return subjects;
     }
     public String getSubjectsString() {
@@ -39,7 +39,7 @@ public class Day {
         }
         return builder.toString();
     }
-    public void setSubjects(HashMap<String, Subject> subjects) {
+    public void setSubjects(HashMap<Integer, Subject> subjects) {
         this.subjects = subjects;
     }
 
