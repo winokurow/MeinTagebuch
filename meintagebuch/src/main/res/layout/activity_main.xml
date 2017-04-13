@@ -66,12 +66,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_gravity="center">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/border">
             <ScrollView
                 android:id="@+id/ScrollView01"
                 android:layout_width="fill_parent"
@@ -84,10 +90,12 @@
                     android:hint="Text hinzufügen"/>
 
             </ScrollView>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
+                android:layout_height="95dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:orientation="horizontal"
                 android:gravity="center"

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <ScrollView
+        android:layout_alignParentTop="true"
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" >
+    <LinearLayout
+        android:id="@+id/dynamic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topLayout"
+        android:gravity="right">
+        <Button
+            android:id="@+id/btnAbbrechen"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dip"
+            android:layout_margin="10dp"
+            android:background="@color/btn_logut_bg"
+            android:text="@string/btn_abbrechen"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_gravity="right"
+            android:textSize="25dp" />
+        <Button
+            android:id="@+id/btnSpeichern"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginTop="40dip"
+            android:layout_margin="10dp"
+            android:background="@color/btn_logut_bg"
+            android:text="@string/btn_speichern"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_gravity="right"
+            android:textSize="25dp" />
+    </LinearLayout>
+</RelativeLayout>

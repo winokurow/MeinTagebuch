@@ -178,4 +178,24 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
         return records;
     }
+
+    public Map<Integer, SubjectMod> getSubjects()
+    {
+        String selectQuery = "SELECT * FROM " + TABLE_SUBJECTS;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Map<Integer, SubjectMod> records = new HashMap<>();
+        if (cursor.getCount() > 0) {
+            // Move to first row
+            if (cursor.moveToFirst()) {
+                do {
+                    records.put(cursor.getInt(0), new SubjectMod(cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        }
+        return records;
+    }
 }

@@ -7,10 +7,17 @@ package org.ilw.meintagebuch.dto;
 public class SubjectMod {
     public String name;
     public String description;
+    public String status;
 
     public SubjectMod(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public SubjectMod(String name, String description, String status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
     }
 
     public String getName() {
@@ -27,5 +34,13 @@ public class SubjectMod {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

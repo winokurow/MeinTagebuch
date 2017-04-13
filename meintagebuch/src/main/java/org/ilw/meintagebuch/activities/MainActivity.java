@@ -3,6 +3,7 @@ package org.ilw.meintagebuch.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -171,6 +172,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ImageButton buttonSettings = (ImageButton) findViewById(R.id.settingsButton);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                MainActivity.this.startActivity(myIntent);
+            }
+        });
         records = db.getRecords();
         redraw();
     }
