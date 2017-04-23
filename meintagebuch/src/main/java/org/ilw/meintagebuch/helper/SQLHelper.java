@@ -159,6 +159,19 @@ public class SQLHelper extends SQLiteOpenHelper {
         long id = db.insert(TABLE_SUBJECTS, null, values);
     }
 
+    /**
+     * Storing user details in database
+     * */
+    public void updateSubject(String id, String name, String status, String description) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_SUBJECTS_NAME, name);
+        values.put(KEY_SUBJECTS_STATUS, status);
+        values.put(KEY_SUBJECTS_DESCRIPTION, description);
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_SUBJECTS, values, KEY_SUBJECTS_ID+"='"+id + "'", null);
+    }
+
     public Map<Integer, SubjectMod> getSubjects(String status)
     {
         String selectQuery = "SELECT * FROM " + TABLE_SUBJECTS + " WHERE STATUS = " + status;

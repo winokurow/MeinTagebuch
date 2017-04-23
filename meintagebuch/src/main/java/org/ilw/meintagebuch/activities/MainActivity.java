@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = new SQLHelper(getApplicationContext());
         comments = new HashMap<Integer,String>();
         records = new HashMap<String,Day>();
         if (date == null) {
@@ -93,7 +94,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        db = new SQLHelper(getApplicationContext());
+
+
+        commentEditText = (EditText) findViewById(R.id.generalComment);
+
+        Button buttonSpeichern = (Button) findViewById(R.id.btnSpeichern);
+        buttonSpeichern.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                save();
+            }
+        });
+
+        ImageButton buttonSettings = (ImageButton) findViewById(R.id.settingsButton);
+        buttonSettings.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                save();
+                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivityForResult(myIntent, 1);
+            }
+        });
+        records = db.getRecords();
+        redraw();
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+    }
+
+    public void redraw() {
+
         subjects = db.getSubjects("1");
         LinearLayout parent = (LinearLayout) findViewById(R.id.dynamic);
         Iterator it = subjects.entrySet().iterator();
@@ -162,29 +195,6 @@ public class MainActivity extends AppCompatActivity {
             parent.addView(layout1);
         }
 
-        commentEditText = (EditText) findViewById(R.id.generalComment);
-
-        Button buttonSpeichern = (Button) findViewById(R.id.btnSpeichern);
-        buttonSpeichern.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                save();
-            }
-        });
-
-        ImageButton buttonSettings = (ImageButton) findViewById(R.id.settingsButton);
-        buttonSettings.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
-                MainActivity.this.startActivity(myIntent);
-            }
-        });
-        records = db.getRecords();
-        redraw();
-    }
-
-    public void redraw() {
         String dateString = simpleDateFormat.format(date);
         dateEditText.setText(dateString);
 
@@ -197,7 +207,8 @@ public class MainActivity extends AppCompatActivity {
             nextButton.setAlpha(1f);
             nextButton.setClickable(true);
         }
-        Iterator it = subjects.entrySet().iterator();
+
+        it = subjects.entrySet().iterator();
         while (it.hasNext()) {
             final Map.Entry pair = (Map.Entry) it.next();
             int id = ((Integer) pair.getKey());
@@ -312,4 +323,18 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(new ArrayAdapter<String>(MainActivity.this,
                 R.layout.popup_layout, android.R.id.text1, contactsList));
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+
+            if(resultCode == RESULT_OK){
+                recreate();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                //Do nothing?
+            }
+        }
+    }//onActivityResult
+
 }
