@@ -16,12 +16,24 @@
         android:orientation="vertical">
     </LinearLayout>
     </ScrollView>
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/topLayout"
+        android:gravity="right">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/addButton"
+            android:layout_gravity="left"
+            android:layout_below="@id/topLayout"
+            android:background="@null"
+            android:src="@drawable/add"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="right">
         <Button
             android:id="@+id/btnAbbrechen"
@@ -47,5 +59,6 @@
             android:textColor="@color/white"
             android:layout_gravity="right"
             android:textSize="25dp" />
+    </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

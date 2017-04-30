@@ -1,5 +1,8 @@
 package org.ilw.meintagebuch.activities;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import org.ilw.meintagebuch.dto.SubjectMod;
@@ -25,6 +30,7 @@ import ilw.org.meintagebuch.R;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "Settings Activity";
+    ImageButton addButton;
     SQLHelper db;
     Map<Integer, SubjectMod> subjects;
     Map<Integer, SubjectMod> subjectsInit;
@@ -32,6 +38,16 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setings);
+
+        addButton = (ImageButton) findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                onShowPopup(view);
+            }
+        });
+
+
         db = new SQLHelper(getApplicationContext());
         subjects = db.getSubjects();
         subjectsInit = new HashMap<>();
@@ -135,5 +151,45 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    // call this method when required to show popup
+    public void onShowPopup(View v){
 
+        LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        // inflate the custom popup layout
+        View inflatedView = layoutInflater.inflate(R.layout.popup_layout, null, false);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(inflatedView);
+
+        final EditText userInput = (EditText) inflatedView
+                .findViewById(R.id.editTextDialogUserInput);
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                // get user input and set it to result
+                                // edit text
+                                //comments.put(elementName, userInput.getText().toString());
+                                //redraw();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
 }
