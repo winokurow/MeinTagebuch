@@ -115,6 +115,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(myIntent, 1);
             }
         });
+
+        ImageButton buttonStatistic = (ImageButton) findViewById(R.id.statisticButton);
+        buttonStatistic.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View view) {
+                save();
+                Intent myIntent = new Intent(MainActivity.this, StatisticActivity.class);
+                startActivityForResult(myIntent, 1);
+            }
+        });
         records = db.getRecords();
         redraw();
     }

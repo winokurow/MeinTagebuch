@@ -173,10 +173,8 @@ public class SettingsActivity extends AppCompatActivity {
                 .setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
-                                // get user input and set it to result
-                                // edit text
-                                //comments.put(elementName, userInput.getText().toString());
-                                //redraw();
+                                db.addSubject(userInput.getText().toString(), "1", userInput.getText().toString());
+                                recreate();
                             }
                         })
                 .setNegativeButton("Cancel",

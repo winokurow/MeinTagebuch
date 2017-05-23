@@ -4,4 +4,5 @@
     <string name="hint_datum">Datum</string>
     <string name="btn_speichern">SPEICHERN</string>
     <string name="btn_abbrechen">ABBRECHEN</string>
+    <string name="btn_ok">OK</string>
 </resources>
