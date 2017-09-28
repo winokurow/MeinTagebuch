@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void redraw() {
+        db = new SQLHelper(getApplicationContext());
 
         subjects = db.getSubjects("1");
         LinearLayout parent = (LinearLayout) findViewById(R.id.dynamic);
@@ -229,8 +230,8 @@ public class MainActivity extends AppCompatActivity {
                 seekBar.setProgress(current.getSubjects().get(id).getValue());
 
                 comments.put(id, current.getSubjects().get(id).getComments());
-                commentEditText.setText(current.getComment());
 
+                commentEditText.setText(current.getComment());
             } else {
 
                 seekBar.setProgress(5);
@@ -253,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
             }
             button.setImageResource(R.drawable.commentset);
         }
+
     }
     public void save() {
         String comment = "";
@@ -265,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
             Subject subj = new Subject(seekBar.getProgress(), comments.get(id));
             subject.put(id, subj);
         }
-
+        db = new SQLHelper(getApplicationContext());
         if (records.containsKey(simpleDateFormat.format(date)))
         {
             Map<Integer, Subject> subjects2 = records.get(simpleDateFormat.format(date)).getSubjects();
@@ -339,11 +341,18 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1) {
 
             if(resultCode == RESULT_OK){
+
                 recreate();
             }
             if (resultCode == RESULT_CANCELED) {
                 //Do nothing?
             }
+            if (resultCode == 12) {
+                db = new SQLHelper(getApplicationContext());
+                records = db.getRecords();
+                redraw();
+            }
+
         }
     }//onActivityResult
 

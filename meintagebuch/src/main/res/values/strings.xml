@@ -5,4 +5,6 @@
     <string name="text_hint_des_tages">Hint des Tages:</string>
     <string name="button_kommentar_hinzuf_gen">Kommentar hinzufügen</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="btn_export">Export</string>
+    <string name="btn_import">Import</string>
 </resources>

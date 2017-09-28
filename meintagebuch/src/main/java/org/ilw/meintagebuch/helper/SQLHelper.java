@@ -5,12 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 import org.ilw.meintagebuch.dto.Day;
 import org.ilw.meintagebuch.dto.Subject;
 import org.ilw.meintagebuch.dto.SubjectMod;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +26,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 10;
 
     // Database Name
     private static final String DATABASE_NAME = "android_api";
@@ -46,34 +52,50 @@ public class SQLHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String CREATE_RECORDS_TABLE = "CREATE TABLE " + TABLE_RECORDS + "("
-                + KEY_RECORDS_DATE + " TEXT PRIMARY KEY," + KEY_RECORDS_SUBJECTS + " TEXT,"
-                + KEY_RECORDS_COMMENT + " TEXT)";
-        db.execSQL(CREATE_RECORDS_TABLE);
-        String CREATE_SUBJECTS_TABLE = "CREATE TABLE " + TABLE_SUBJECTS + "("
-                + KEY_SUBJECTS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECTS_NAME + " TEXT," + KEY_SUBJECTS_DESCRIPTION + " TEXT,"
-                + KEY_SUBJECTS_STATUS + " TEXT)";
-        db.execSQL(CREATE_SUBJECTS_TABLE);
+        if (!(isTableExists(db, TABLE_RECORDS, false))) {
+            String CREATE_RECORDS_TABLE = "CREATE TABLE " + TABLE_RECORDS + "("
+                    + KEY_RECORDS_DATE + " TEXT PRIMARY KEY," + KEY_RECORDS_SUBJECTS + " TEXT,"
+                    + KEY_RECORDS_COMMENT + " TEXT)";
+            db.execSQL(CREATE_RECORDS_TABLE);
+            String CREATE_SUBJECTS_TABLE = "CREATE TABLE " + TABLE_SUBJECTS + "("
+                    + KEY_SUBJECTS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_SUBJECTS_NAME + " TEXT," + KEY_SUBJECTS_DESCRIPTION + " TEXT,"
+                    + KEY_SUBJECTS_STATUS + " TEXT)";
+            db.execSQL(CREATE_SUBJECTS_TABLE);
 
-        addSubject(db, "Schule", "1", "Schule");
-        addSubject(db, "Sport", "1", "Sport");
-        addSubject(db, "Entspannen", "1", "Entspannen");
-        addSubject(db, "Aussehen", "1", "Aussehen");
-        addSubject(db, "Freunde", "1", "Freunde");
-        addSubject(db, "Neues", "1", "Etwas neues...");
-        addSubject(db, "Zimmer", "1", "Zimmer und Wohnung");
-        addSubject(db, "Eltern", "1", "Eltern");
-        addSubject(db, "Kontrolle", "1", "Selbstkontrolle");
-        addSubject(db, "Hobby", "1", "Hobby");
-        Log.d(TAG, "Database tables created");
+            addSubject(db, "Schule", "1", "Schule");
+            addSubject(db, "Sport", "1", "Sport");
+            addSubject(db, "Entspannen", "1", "Entspannen");
+            addSubject(db, "Aussehen", "1", "Aussehen");
+            addSubject(db, "Freunde", "1", "Freunde");
+            addSubject(db, "Neues", "1", "Etwas neues...");
+            addSubject(db, "Zimmer", "1", "Zimmer und Wohnung");
+            addSubject(db, "Eltern", "1", "Eltern");
+            addSubject(db, "Kontrolle", "1", "Selbstkontrolle");
+            addSubject(db, "Hobby", "1", "Hobby");
+            Log.d(TAG, "Database tables created");
+        }
     }
 
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_RECORDS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SUBJECTS);
+
+        int upgradeTo = oldVersion + 1;
+        while (upgradeTo != newVersion)
+        {
+            switch (upgradeTo)
+            {
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 9:
+                    addSubject(db, "Test", "1", "Test");
+                    break;
+            }
+            upgradeTo++;
+        }
+
         // Create tables again
         onCreate(db);
     }
@@ -100,7 +122,6 @@ public class SQLHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.close();
         }
         return records;
     }
@@ -187,7 +208,6 @@ public class SQLHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.close();
         }
         return records;
     }
@@ -207,8 +227,89 @@ public class SQLHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-            db.close();
         }
         return records;
+    }
+
+    public boolean isTableExists(SQLiteDatabase db, String tableName, boolean openDb) {
+        if(openDb) {
+            if(db == null || !db.isOpen()) {
+                db = getReadableDatabase();
+            }
+
+            if(!db.isReadOnly()) {
+                db.close();
+                db = getReadableDatabase();
+            }
+        }
+
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
+    public static void backupDatabase() throws IOException {
+        //Open your local db as the input stream
+        String inFileName = "/data/data/org.ilw.meintagebuch/databases/" + DATABASE_NAME;
+        File dbFile = new File(inFileName);
+        FileInputStream fis = new FileInputStream(dbFile);
+
+        String outFileName = Environment.getExternalStorageDirectory()+"/" + DATABASE_NAME;
+        //Open the empty db as the output stream
+        OutputStream output = new FileOutputStream(outFileName);
+        //transfer bytes from the inputfile to the outputfile
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = fis.read(buffer))>0){
+            output.write(buffer, 0, length);
+        }
+        //Close the streams
+        output.flush();
+        output.close();
+        fis.close();
+    }
+
+    public void importDB() throws IOException {
+        // Close the SQLiteOpenHelper so it will commit the created empty
+        // database to internal storage.
+        //close();
+
+        //Open your local db as the input stream
+        String outFileName = "/data/data/org.ilw.meintagebuch/databases/" + DATABASE_NAME;
+        String inFileName = Environment.getExternalStorageDirectory()+"/" + DATABASE_NAME;
+        File dbFile = new File(inFileName);
+        File newFile = new File(outFileName);
+        if (newFile.exists())
+        {
+            newFile.delete();
+        }
+        FileInputStream fis = new FileInputStream(dbFile);
+
+
+        //Open the empty db as the output stream
+        OutputStream output = new FileOutputStream(outFileName);
+        //transfer bytes from the inputfile to the outputfile
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = fis.read(buffer))>0){
+            output.write(buffer, 0, length);
+        }
+        //Close the streams
+        output.flush();
+        output.close();
+        fis.close();
+        this.
+        getWritableDatabase().close();
+    }
+
+    public void resetDatabase() {
+        getWritableDatabase().close();
+        onCreate(getWritableDatabase());
     }
 }
