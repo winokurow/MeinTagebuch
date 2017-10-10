@@ -6,28 +6,39 @@
     >
     <Spinner
         android:layout_alignParentTop="true"
-        android:id="@+id/spinner1"
+        android:id="@+id/period"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
-    <ScrollView
-        android:layout_below="@id/spinner1"
-        android:id="@+id/topLayout"
+    <Spinner
+        android:id="@+id/subject1"
+        android:layout_below="@id/period"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <LinearLayout
-            android:id="@+id/dynamic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+    <Spinner
+        android:id="@+id/subject2"
+        android:layout_below="@id/subject1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+    <Spinner
+        android:id="@+id/subject3"
+        android:layout_below="@id/subject2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/topLayout"
+        android:layout_below="@id/subject3"
+        android:id="@+id/buttonsLayout"
         android:gravity="right">
         <LinearLayout
             android:orientation="horizontal"
@@ -71,5 +82,22 @@
                 android:layout_gravity="right"
                 android:textSize="25dp" />
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:ap="http://schemas.android.com/apk/res-auto"
+        android:layout_below="@id/buttonsLayout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <com.androidplot.xy.XYPlot
+            style="@style/APDefacto.Dark"
+            android:id="@+id/plot"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+
+            ap.title="A Simple XY Plot"
+            ap.rangeTitle="range"
+            ap.domainTitle="domain"
+            ap.lineLabels="left|bottom"
+            ap.lineLabelRotationBottom="-45"/>
     </LinearLayout>
 </RelativeLayout>
