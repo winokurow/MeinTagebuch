@@ -26,7 +26,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 17;
 
     // Database Name
     private static final String DATABASE_NAME = "android_api";
@@ -36,6 +36,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     private static final String KEY_RECORDS_DATE = "date";
     private static final String KEY_RECORDS_SUBJECTS = "subjects";
     private static final String KEY_RECORDS_COMMENT = "comment";
+    private static final String KEY_RECORDS_COLOR = "color";
 
     private static final String TABLE_SUBJECTS = "subjects";
 
@@ -89,9 +90,10 @@ public class SQLHelper extends SQLiteOpenHelper {
                     break;
                 case 6:
                     break;
-                case 9:
-                    addSubject(db, "Test", "1", "Test");
-                    break;
+                case 16:
+                    String ADD_COLOR_COLUMN_TABLE = "ALTER TABLE " + TABLE_RECORDS + " ADD " + KEY_RECORDS_COLOR + " INT;";
+                    db.execSQL(ADD_COLOR_COLUMN_TABLE);
+
             }
             upgradeTo++;
         }
@@ -117,7 +119,7 @@ public class SQLHelper extends SQLiteOpenHelper {
                         String[] temp = subjectText.split("XXXXX");
                         subjects.put(Integer.parseInt(temp[0]), new Subject(Integer.parseInt(temp[1]), temp[2]));
                     }
-                    records.put(cursor.getString(0), new Day(subjects, cursor.getString(2)));
+                    records.put(cursor.getString(0), new Day(subjects, cursor.getString(2), cursor.getInt(3)));
                     // get the data into array, or class variable
                 } while (cursor.moveToNext());
             }
@@ -149,7 +151,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put(KEY_RECORDS_DATE, date);
         values.put(KEY_RECORDS_SUBJECTS, day.getSubjectsString());
         values.put(KEY_RECORDS_COMMENT, day.getComment());
-
+        values.put(KEY_RECORDS_COLOR, day.getColor());
         SQLiteDatabase db = this.getWritableDatabase();
 
         if (isDateExists(date)) {
@@ -176,7 +178,6 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put(KEY_SUBJECTS_NAME, name);
         values.put(KEY_SUBJECTS_STATUS, status);
         values.put(KEY_SUBJECTS_DESCRIPTION, description);
-
         long id = db.insert(TABLE_SUBJECTS, null, values);
     }
 

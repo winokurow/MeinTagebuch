@@ -10,10 +10,12 @@ import java.util.Map;
 public class Day {
     Map<Integer, Subject> subjects;
     String comment;
+    int color;
 
-    public Day(Map<Integer, Subject> subjects, String comment) {
+    public Day(Map<Integer, Subject> subjects, String comment, int color) {
         this.subjects = subjects;
         this.comment = comment;
+        this.color = color;
     }
 
     public Map<Integer, Subject> getSubjects() {
@@ -49,5 +51,13 @@ public class Day {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }

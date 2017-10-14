@@ -1,196 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/mainLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="vertical"
-        android:background="@color/white">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/topLayout"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:layout_gravity="center">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_gravity="center">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white">
 
-        <ImageButton
-            android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/previousDateButton"
-            android:background="@color/white"
-            android:src="@drawable/previous"
-            android:contentDescription="@string/button_vorheriger_tag" />
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="0dp"
-            android:layout_weight=".70"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@color/white"
-            android:hint="@string/hint_datum"
-            android:padding="10dp"
-            android:textColor="@color/input_login"
-            android:textColorHint="@color/input_login_hint" />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/nextDateButton"
-            android:background="@color/white"
-            android:src="@drawable/next"
-            android:contentDescription="@string/button_naechster_tag" />
-    </LinearLayout>
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/previousDateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:contentDescription="@string/button_vorheriger_tag"
+                android:src="@drawable/previous" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight=".70"
+                android:background="@color/white"
+                android:hint="@string/hint_datum"
+                android:padding="10dp"
+                android:textColor="@color/input_login"
+                android:textColorHint="@color/input_login_hint" />
+
+            <ImageButton
+                android:id="@+id/nextDateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:contentDescription="@string/button_naechster_tag"
+                android:src="@drawable/next" />
+        </LinearLayout>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/bottomLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="50dp"
-        android:layout_alignParentBottom="true"
         android:gravity="center">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_alignParentBottom="true"
-            android:orientation="vertical"
-            android:gravity="center"
+            android:layout_height="95dp"
             android:layout_gravity="center"
-            android:background="@drawable/border">
-            <ScrollView
-                android:id="@+id/ScrollView01"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/generalComment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Text hinzufügen"/>
+            <ImageButton
+                android:id="@+id/settingsButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight=".33"
+                android:background="@color/white"
+                android:src="@drawable/settings" />
 
-            </ScrollView>
+            <ImageButton
+                android:id="@+id/statisticButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_weight=".34"
+                android:background="@color/white"
+                android:src="@drawable/statistic" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnSpeichern"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="40dip"
+                    android:layout_weight=".33"
+                    android:background="@color/btn_logut_bg"
+                    android:text="@string/btn_speichern"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="25dp" />
             </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/centerLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/bottomLayout"
+        android:layout_below="@id/topLayout"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/backgroundPanel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/backgroundType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <Button
+                android:id="@+id/btnColorPicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_color_text" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:id="@+id/ScrollViewComment"
+            android:layout_width="fill_parent"
+            android:layout_height="100dp"
+            android:layout_above="@id/backgroundPanel"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/oldpaper1">
+
+            <org.ilw.meintagebuch.views.LinedEditText
+                android:id="@+id/generalComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="Text hinzufügen" />
+        </ScrollView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/ScrollViewComment">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="95dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_gravity="center">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:layout_height="wrap_content"
-                    android:id="@+id/settingsButton"
-                    android:background="@color/white"
-                    android:layout_gravity="left"
-                    android:layout_width="0dp"
-                    android:layout_weight=".33"
-                    android:src="@drawable/settings"/>
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_weight=".34"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/statisticButton"
-                    android:layout_marginLeft="10dp"
-                    android:background="@color/white"
-                    android:layout_gravity="left"
-                    android:src="@drawable/statistic"/>
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="0dp"
-                    android:layout_weight=".33"
-                    android:layout_height="wrap_content"
-                    android:gravity="right">
-                    <Button
-                        android:id="@+id/btnSpeichern"
-                        android:layout_width="0dp"
-                        android:layout_weight=".33"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="40dip"
-                        android:layout_margin="10dp"
-                        android:background="@color/btn_logut_bg"
-                        android:text="@string/btn_speichern"
-                        android:textAllCaps="false"
-                        android:textColor="@color/white"
-                        android:layout_gravity="right"
-                        android:textSize="25dp" />
+                    android:id="@+id/subjectsLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/border"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:maxLines="6000"
+                        android:text="@string/text_hint_des_tages"
+
+                        android:textColorHighlight="@android:color/primary_text_dark"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/text_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:maxLines="6000"
+                        android:text="Essen Sie mehr Obst"
+
+                        android:textSize="40sp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dynamic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></LinearLayout>
+
             </LinearLayout>
-        </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
-    <ScrollView
-        android:layout_below="@id/topLayout"
-        android:layout_above="@id/bottomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="fill_parent" >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="75dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_gravity="center"
-    android:background="@drawable/border">
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="25dp"
-        android:text="@string/text_hint_des_tages"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textColorHighlight="@android:color/primary_text_dark"
-        android:textSize="14sp"
-        android:maxLines="6000"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp" />
-    <TextView
-        android:id="@+id/text_id"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:text="Essen Sie mehr Obst"
-        android:textColor="@android:color/holo_blue_dark"
-        android:textColorHighlight="@android:color/primary_text_dark"
-        android:textSize="20sp"
-        android:maxLines="6000"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        />
-</LinearLayout>
-    <LinearLayout
-        android:id="@+id/dynamic"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
-
-    </RelativeLayout>
+</RelativeLayout>
